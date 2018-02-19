@@ -1,0 +1,24 @@
+{
+  "name": "fetch",
+  "version": "1.0.0",
+  "description": "A fetch implementation supporting progress events, cancellable calls and timeout",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/herzaso/fetch.git"
+  },
+  "keywords": [
+    "fetch",
+    "progress",
+    "timeout"
+  ],
+  "author": "Ofir Herzas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/herzaso/fetch/issues"
+  },
+  "homepage": "https://github.com/herzaso/fetch#readme"
+}
