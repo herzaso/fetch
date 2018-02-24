@@ -1,4 +1,4 @@
-fetch
+xfetch
 =============
 The fetch API is a great replacement for XHR, allowing for a more modern usage
 with Promises.
@@ -13,7 +13,7 @@ progress events, cancellable calls, timeouts and ETag support.
 
 ### NPM
 ```sh
-npm install --save isomorphic-fetch es6-promise
+npm install --save xfetch
 ```
 
 ## Usage
