@@ -1,13 +1,6 @@
 'use strict';
 
-/*
-function onprogress(event) {
-  if (event.lengthComputable) {
-    var percent = Math.floor((event.loaded / event.total) * 100)
-    console.log(percent)
-  }
-}
-*/
+var fetchIsDefined = !!global.fetch;
 
 function timelyPromise(promise, ms) {
   var timeout = new Promise((resolve, reject) => {
@@ -20,15 +13,14 @@ function timelyPromise(promise, ms) {
   return Promise.race([promise, timeout]);
 }
 
-function xfetch(uri, options = {}, onprogress = null) {
+function fetch(uri, options = {}) {
   var defaults = {
     method: 'GET',
     headers: [],
-    body: null,
     timeout: null
   };
   var op = Object.assign({}, defaults, options);
-  var promise = onprogress ?
+  var promise = op.onProgress || op.onUploadProgress || !fetchIsDefined ?
     new Promise(function(resolve, reject) {
       var xhr = new XMLHttpRequest();
       xhr.open(op.method, uri);
@@ -36,19 +28,22 @@ function xfetch(uri, options = {}, onprogress = null) {
         resolve(xhr.responseText);
       }
       xhr.onerror = reject;
-      xhr.onprogress = onprogress;
-      xhr.upload.onprogress = onprogress;
+      xhr.onprogress = op.onProgress;
+      xhr.upload.onprogress = op.onUploadProgress;
       op.headers.forEach(function(value, name) {
         xhr.setRequestHeader(name, value);
       })
-      xhr.send();
-    }) :
-    fetch(uri, op);
+      xhr.send(op.body);
+    }) : fetch(uri, op);
 
   return op.timeout === null ?
     promise :
     timelyPromise(promise, op.timeout);
 }
 
-module.exports = xfetch;
+module.exports = fetch;
 module.exports.timelyPromise = timelyPromise;
+
+if (!fetchIsDefined) {
+	global.fetch = module.exports;
+}
